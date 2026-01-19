@@ -720,7 +720,7 @@ else if (scenario === 'dissatisfied') advice = `主观争议难度较高。需�
   const Header = () => (
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50 h-16">
       <div className="max-w-5xl mx-auto px-6 h-full flex justify-between items-center">
-        <div className="flex items-center gap-3">
+        <a href="https://ruhang365.cn" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
            {/* Logo 图标 */}
            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-sm shrink-0 border border-gray-100">
              {!imgError ? (
@@ -744,7 +744,7 @@ else if (scenario === 'dissatisfied') advice = `主观争议难度较高。需�
              <h1 className="font-bold text-gray-900 leading-none text-lg">{BRAND_CONFIG.name}</h1>
              <p className="text-[11px] text-gray-500 font-medium tracking-wide mt-0.5">{BRAND_CONFIG.subName}</p>
            </div>
-        </div>
+        </a>
 
         <div className="hidden md:flex items-center gap-2">
            <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
@@ -1666,27 +1666,31 @@ return (
 
       </main>
 
-      <footer className="relative z-10 py-10 text-center border-t border-gray-100 bg-white/50 backdrop-blur-sm mt-10">
-        
-<div className="flex flex-col items-center gap-3">
-
+      <footer className="relative z-10 py-12 text-center border-t border-gray-100 bg-white/50 backdrop-blur-sm mt-10">
+        <div className="flex flex-col items-center gap-6">
+           <a href="https://ruhang365.cn" target="_blank" rel="noopener noreferrer" className="hover:opacity-80 transition-opacity">
+             <img 
+               src={BRAND_CONFIG.fullLogo} 
+               alt="入行365" 
+               className="h-12 md:h-16 object-contain opacity-90 hover:opacity-100 transition-all" 
+               onError={(e) => {
+                 if (e.target.src.endsWith(BRAND_CONFIG.fullLogo)) {
+                    e.target.src = BRAND_CONFIG.logo;
+                    e.target.className = "w-12 h-12 rounded-xl shadow-sm";
+                 } else {
+                    e.target.style.display = 'none';
+                 }
+               }} 
+             />
+           </a>
            
-<img src={BRAND_CONFIG.logo} alt="Logo" className="w-8 h-8 rounded-lg opacity-80 grayscale hover:grayscale-0 transition-all" onError={(e) => e.target.style.display='none'} />
-
-           
-<p className="text-sm font-bold text-gray-900 tracking-tight">入行 365</p>
-
-           <p className="text-xs text-gray-500 font-medium">{BRAND_CONFIG.slogan}</p>
-           <p className="text-[10px] text-gray-400 mt-4 max-w-xs mx-auto leading-normal">
-             
-© {BRAND_CONFIG.year} Ruhang365. Tool logic based on community best practices. Not legal advice.
-
-           
-</p>
-
-        
-</div>
-
+           <div className="space-y-1">
+              <p className="text-xs text-gray-500 font-medium">{BRAND_CONFIG.slogan}</p>
+              <p className="text-[10px] text-gray-400 max-w-xs mx-auto leading-normal">
+                © {BRAND_CONFIG.year} Ruhang365. Tool logic based on community best practices. Not legal advice.
+              </p>
+           </div>
+        </div>
       </footer>
 
       <style>{`

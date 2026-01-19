@@ -86,19 +86,12 @@ const
 // --- 核心配置 ---
 
 const BRAND_CONFIG = {
-  logo
-: "入行 365 社媒头像-压缩logo-optimized.png",
-
-  name
-: "AI 后悔药",
-
-  subName
-: "AI Subscription Assistant",
-
+  logo: "/logo.png", // 正方形图标
+  fullLogo: "/logo-full.png", // 长条形 Banner
+  name: "AI 后悔药",
+  subName: "AI Subscription Assistant",
   slogan: "入行 从这里开始",
-  year
-: "2026"
-
+  year: "2026"
 };
 
 // --- API Helpers ---
@@ -725,64 +718,44 @@ else if (scenario === 'dissatisfied') advice = `主观争议难度较高。需�
   // --- UI Components ---
 
   const Header = () => (
-    
-<header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50 h-16">
-
-      
-<div className="max-w-5xl mx-auto px-6 h-full flex justify-between items-center">
-
-        
-<div className="flex items-center gap-3">
-
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-600 to-indigo-700 shadow-sm shrink-0">
-             
-{!imgError ? (
-
-               
-<img 
-
-                 src
-={BRAND_CONFIG.logo} 
-
-                 alt
-="Logo" 
-
-                 className
-="w-full h-full object-cover" 
-
-                 onError={() => setImgError(true)}
+    <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50 h-16">
+      <div className="max-w-5xl mx-auto px-6 h-full flex justify-between items-center">
+        <div className="flex items-center gap-3">
+           {/* 优先显示完整 Logo，如果没有加载成功则显示文字兜底 */}
+           <div className="h-8 flex items-center overflow-hidden">
+             {!imgError ? (
+               <img 
+                 src={BRAND_CONFIG.fullLogo} 
+                 alt="Logo" 
+                 className="h-full object-contain" 
+                 onError={(e) => {
+                   // 如果长图加载失败，尝试加载方图
+                   if (e.target.src.endsWith(BRAND_CONFIG.fullLogo)) {
+                     e.target.src = BRAND_CONFIG.logo;
+                   } else {
+                     setImgError(true);
+                   }
+                 }}
                />
              ) : (
-               
-<span className="text-[10px] font-bold text-white leading-none">365</span>
-
+               <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 shadow-sm shrink-0">
+                    <span className="text-[10px] font-bold text-white leading-none">365</span>
+                  </div>
+                  <div>
+                    <h1 className="font-bold text-gray-900 leading-none text-base">{BRAND_CONFIG.name}</h1>
+                    <p className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5">{BRAND_CONFIG.subName}</p>
+                  </div>
+               </div>
              )}
-          </div>
-          
-<div>
-
-            <h1 className="font-bold text-gray-900 leading-none text-base">{BRAND_CONFIG.name}</h1>
-            
-<p className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5">{BRAND_CONFIG.subName}</p>
-
-          
-</div>
-
+           </div>
         </div>
         <div className="hidden md:flex items-center gap-2">
-           
-<span className="flex h-2 w-2 rounded-full bg-green-500"></span>
-
-           
-<span className="text-xs font-medium text-gray-500">Online Assistant</span>
-
+           <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
+           <span className="text-xs font-medium text-gray-500">Online Assistant</span>
         </div>
-      
-</div>
-
-    
-</header>
-
+      </div>
+    </header>
   );
 
   const IntroView = () => (

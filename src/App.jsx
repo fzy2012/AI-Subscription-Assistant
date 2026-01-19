@@ -721,35 +721,31 @@ else if (scenario === 'dissatisfied') advice = `主观争议难度较高。需�
     <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-gray-100 z-50 h-16">
       <div className="max-w-5xl mx-auto px-6 h-full flex justify-between items-center">
         <div className="flex items-center gap-3">
-           {/* 优先显示完整 Logo，如果没有加载成功则显示文字兜底 */}
-           <div className="h-8 flex items-center overflow-hidden">
+           {/* Logo 图标 */}
+           <div className="w-10 h-10 rounded-xl overflow-hidden shadow-sm shrink-0 border border-gray-100">
              {!imgError ? (
                <img 
-                 src={BRAND_CONFIG.fullLogo} 
+                 src={BRAND_CONFIG.logo} 
                  alt="Logo" 
-                 className="h-full object-contain" 
+                 className="w-full h-full object-cover" 
                  onError={(e) => {
-                   // 如果长图加载失败，尝试加载方图
-                   if (e.target.src.endsWith(BRAND_CONFIG.fullLogo)) {
-                     e.target.src = BRAND_CONFIG.logo;
-                   } else {
-                     setImgError(true);
-                   }
+                   setImgError(true);
                  }}
                />
              ) : (
-               <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700 shadow-sm shrink-0">
-                    <span className="text-[10px] font-bold text-white leading-none">365</span>
-                  </div>
-                  <div>
-                    <h1 className="font-bold text-gray-900 leading-none text-base">{BRAND_CONFIG.name}</h1>
-                    <p className="text-[10px] text-gray-500 font-medium tracking-wide mt-0.5">{BRAND_CONFIG.subName}</p>
-                  </div>
+               <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-700">
+                  <span className="text-xs font-bold text-white leading-none">365</span>
                </div>
              )}
            </div>
+           
+           {/* 应用名称 - 始终显示 */}
+           <div>
+             <h1 className="font-bold text-gray-900 leading-none text-lg">{BRAND_CONFIG.name}</h1>
+             <p className="text-[11px] text-gray-500 font-medium tracking-wide mt-0.5">{BRAND_CONFIG.subName}</p>
+           </div>
         </div>
+
         <div className="hidden md:flex items-center gap-2">
            <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
            <span className="text-xs font-medium text-gray-500">Online Assistant</span>

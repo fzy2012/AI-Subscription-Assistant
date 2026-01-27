@@ -54,7 +54,7 @@ const BRAND_CONFIG = {
 
 // --- API Helpers ---
 const callGemini = async (prompt, systemInstruction = "", responseSchema = null) => {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${apiKey}`;
   
   const payload = {
     contents: [{ parts: [{ text: prompt }] }],
@@ -104,6 +104,25 @@ const KNOWLEDGE_BASE = {
       name: 'Google Play',
       policy: '48小时内通过 Google Play 订单记录申请是黄金窗口期。超过48小时则需直接联系开发者，难度增加。',
       refundUrl: 'https://support.google.com/googleplay/workflow/9813244'
+    },
+    'lovart': {
+      name: 'Lovart',
+      policy: 'Lovart 退费需通过邮件进行，且流程较为特殊。通常需要两轮邮件交互，并可能需要支付平台介入。',
+      refundUrl: null,
+      steps: [
+        {
+          title: "发送首封邮件",
+          desc: "发送英文邮件至 support@lovart.ai，说明误操作/未确认金额，要求退款。"
+        },
+        {
+          title: "回复自动邮件",
+          desc: "收到系统自动回复后，必须发送第二封邮件，附上账单截图，再次强调退款诉求。"
+        },
+        {
+          title: "支付平台介入 (兜底)",
+          desc: "若 12 小时无回复，请立即联系支付平台 (如支付宝 95188) 客服，提交电子表单申诉。"
+        }
+      ]
     },
     'other': {
       name: '其他平台 (SaaS通用)',
@@ -257,9 +276,7 @@ const IntroView = ({ setStep }) => (
     {/* Hero Section */}
     <div className="text-center mb-16 relative">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-blue-400/20 blur-[120px] rounded-full pointer-events-none" />
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-medium mb-6">
-        <Sparkles size={12} /> Powered by Google Gemini 2.5 Flash
-      </div>
+      
       <h1 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight mb-6 leading-tight">
         误扣费？想退款？<br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">AI 帮你“反悔”。</span>
@@ -301,7 +318,7 @@ const IntroView = ({ setStep }) => (
         </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">AI 深度润色</h3>
         <p className="text-sm text-gray-500 leading-relaxed">
-          Gemini 模型根据您的具体遭遇，自动生成符合商务礼仪且引用消费者权益的申诉邮件。
+          AI 模型根据您的具体遭遇，自动生成符合商务礼仪且引用消费者权益的申诉邮件。
         </p>
       </div>
 
@@ -601,28 +618,51 @@ const ResultView = ({ setStep, formData, aiPolishedEmail, handleEmailPolish, isA
              执行步骤
            </h3>
            <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm space-y-6">
-              <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold text-sm shrink-0">1</div>
-                <div>
-                  <h4 className="font-bold text-sm text-gray-900">自助通道 (Self-Service)</h4>
-                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                     {formData.platformType === 'apple' 
-                      ? <span>访问 <a href="https://reportaproblem.apple.com" target="_blank" className="text-blue-600 underline font-medium">Apple 报告问题页</a>，登录后选择 "I didn't mean to buy this"。</span>
-                      : <span>登录官网 {platformInfo.refundUrl && <a href={platformInfo.refundUrl} target="_blank" className="text-blue-600 underline font-medium">账户页 <ExternalLink size={10} className="inline"/></a>}。先尝试点 "Cancel"，部分平台在检测到 0 用量时会触发自动退款弹窗。</span>
-                    }
-                  </p>
-                </div>
-              </div>
-              <div className="w-px h-4 bg-gray-200 ml-4"></div>
-              <div className="flex gap-4">
-                <div className="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold text-sm shrink-0">2</div>
-                <div>
-                  <h4 className="font-bold text-sm text-gray-900">发送申诉 (Email/Chat)</h4>
-                  <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                     若自助失败，请复制右侧文案，发送至 <span className="font-mono bg-gray-100 px-1 rounded">support@{formData.platform.replace(/\s+/g, '').toLowerCase()}.com</span> 或在线客服。
-                  </p>
-                </div>
-              </div>
+              {platformInfo.steps ? (
+                // Custom Steps for platforms like Lovart
+                platformInfo.steps.map((step, index) => (
+                  <div key={index}>
+                    <div className="flex gap-4">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 ${index === platformInfo.steps.length - 1 ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'}`}>
+                        {index + 1}
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-gray-900">{step.title}</h4>
+                        <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                           {step.desc}
+                        </p>
+                      </div>
+                    </div>
+                    {index < platformInfo.steps.length - 1 && <div className="w-px h-4 bg-gray-200 ml-4 my-1"></div>}
+                  </div>
+                ))
+              ) : (
+                // Default Standard Steps
+                <>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                    <div>
+                      <h4 className="font-bold text-sm text-gray-900">自助通道 (Self-Service)</h4>
+                      <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                         {formData.platformType === 'apple' 
+                          ? <span>访问 <a href="https://reportaproblem.apple.com" target="_blank" className="text-blue-600 underline font-medium">Apple 报告问题页</a>，登录后选择 "I didn't mean to buy this"。</span>
+                          : <span>登录官网 {platformInfo.refundUrl && <a href={platformInfo.refundUrl} target="_blank" className="text-blue-600 underline font-medium">账户页 <ExternalLink size={10} className="inline"/></a>}。先尝试点 "Cancel"，部分平台在检测到 0 用量时会触发自动退款弹窗。</span>
+                        }
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-px h-4 bg-gray-200 ml-4"></div>
+                  <div className="flex gap-4">
+                    <div className="w-8 h-8 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                    <div>
+                      <h4 className="font-bold text-sm text-gray-900">发送申诉 (Email/Chat)</h4>
+                      <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                         若自助失败，请复制右侧文案，发送至 <span className="font-mono bg-gray-100 px-1 rounded">support@{formData.platform.replace(/\s+/g, '').toLowerCase()}.com</span> 或在线客服。
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )}
            </div>
          </div>
 
@@ -718,6 +758,7 @@ const App = () => {
       else if (lowerVal.includes('midjourney') || lowerVal.includes('mj')) setFormData(prev => ({ ...prev, platformType: 'midjourney' }));
       else if (lowerVal.includes('apple') || lowerVal.includes('store')) setFormData(prev => ({ ...prev, platformType: 'apple' }));
       else if (lowerVal.includes('google')) setFormData(prev => ({ ...prev, platformType: 'google' }));
+      else if (lowerVal.includes('lovart')) setFormData(prev => ({ ...prev, platformType: 'lovart' }));
       else setFormData(prev => ({ ...prev, platformType: 'other' }));
     }
   };
@@ -766,6 +807,7 @@ const App = () => {
       else if (lowerPlat.includes('midjourney') || lowerPlat.includes('mj')) pType = 'midjourney';
       else if (lowerPlat.includes('apple')) pType = 'apple';
       else if (lowerPlat.includes('google')) pType = 'google';
+      else if (lowerPlat.includes('lovart')) pType = 'lovart';
       setFormData(prev => ({ ...prev, platformType: pType }));
 
       // If we successfully got a scenario, move to step 2 (Details) directly, skipping manual selection

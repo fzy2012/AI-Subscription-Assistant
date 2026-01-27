@@ -272,9 +272,9 @@ const Header = () => {
 };
 
 const IntroView = ({ setStep }) => (
-  <div className="pt-32 pb-20 px-6 max-w-5xl mx-auto animate-fade-in">
+  <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto animate-fade-in flex flex-col justify-center min-h-[calc(100vh-4rem)]">
     {/* Hero Section */}
-    <div className="text-center mb-16 relative">
+    <div className="text-center mb-12 relative">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-blue-400/20 blur-[120px] rounded-full pointer-events-none" />
       
       <h1 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight mb-6 leading-tight">
@@ -295,7 +295,7 @@ const IntroView = ({ setStep }) => (
     </div>
 
     {/* Bento Grid Features */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
       <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
           <BarChart3 size={80} className="text-blue-600" />
@@ -378,10 +378,38 @@ const TemplateSelectView = ({ setStep, formData, setFormData, handleSmartFill, i
       </div>
     </div>
 
+    {/* Popular Platforms Shortcut */}
+    <div className="mb-8">
+      <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">🔥 热门平台直通车</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div 
+          onClick={() => {
+            setFormData(prev => ({ 
+              ...prev, 
+              platform: 'Lovart', 
+              platformType: 'lovart',
+              scenario: 'other' // Lovart 走特殊流程，可默认选一个或后续逻辑覆盖
+            }));
+            setStep(2);
+          }}
+          className="group cursor-pointer flex items-center gap-4 p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md hover:border-pink-200 transition-all"
+        >
+          <div className="w-12 h-12 rounded-full bg-pink-50 flex items-center justify-center text-pink-500 font-bold text-lg shrink-0 group-hover:scale-110 transition-transform">
+            L
+          </div>
+          <div>
+            <h3 className="font-bold text-gray-900 group-hover:text-pink-600 transition-colors">Lovart 退款专区</h3>
+            <p className="text-xs text-gray-500">针对 Lovart 复杂邮件申诉流程的定制模板</p>
+          </div>
+          <ArrowRight className="ml-auto w-5 h-5 text-gray-300 group-hover:text-pink-500 group-hover:translate-x-1 transition-all" />
+        </div>
+      </div>
+    </div>
+
     <div className="mb-6">
       <div className="flex items-center gap-4 mb-3">
          <div className="h-px bg-gray-200 flex-grow"></div>
-         <span className="text-xs font-bold text-gray-400 uppercase">或者手动选择</span>
+         <span className="text-xs font-bold text-gray-400 uppercase">或者手动选择场景</span>
          <div className="h-px bg-gray-200 flex-grow"></div>
       </div>
       <h2 className="text-3xl font-bold text-gray-900 mb-3">发生了什么？</h2>
@@ -902,11 +930,11 @@ const App = () => {
              <img 
                src={BRAND_CONFIG.fullLogo} 
                alt="入行365" 
-               className="h-12 md:h-16 object-contain opacity-90 hover:opacity-100 transition-all" 
+               className="h-16 md:h-20 object-contain opacity-90 hover:opacity-100 transition-all" 
                onError={(e) => {
                  if (e.target.src.endsWith(BRAND_CONFIG.fullLogo)) {
                     e.target.src = BRAND_CONFIG.logo;
-                    e.target.className = "w-12 h-12 rounded-xl shadow-sm";
+                    e.target.className = "w-16 h-16 rounded-xl shadow-sm";
                  } else {
                     e.target.style.display = 'none';
                  }

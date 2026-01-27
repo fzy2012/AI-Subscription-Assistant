@@ -272,65 +272,65 @@ const Header = () => {
 };
 
 const IntroView = ({ setStep }) => (
-  <div className="pt-20 pb-16 px-6 max-w-5xl mx-auto animate-fade-in flex flex-col justify-center min-h-[calc(100vh-4rem)]">
+  <div className="pt-10 pb-10 px-6 max-w-5xl mx-auto animate-fade-in flex flex-col items-center">
     {/* Hero Section */}
-    <div className="text-center mb-12 relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-blue-400/20 blur-[120px] rounded-full pointer-events-none" />
+    <div className="text-center mb-10 relative w-full">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-blue-400/20 blur-[100px] rounded-full pointer-events-none" />
       
-      <h1 className="text-4xl md:text-6xl font-black text-gray-900 tracking-tight mb-6 leading-tight">
+      <h1 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-4 leading-tight">
         误扣费？想退款？<br />
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">AI 帮你“反悔”。</span>
       </h1>
-      <p className="text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+      <p className="text-base text-gray-500 max-w-xl mx-auto mb-8 leading-relaxed">
         基于真实案例数据与 LLM 大模型，为您生成胜率最高的申诉策略与律师级文书。
         不再为误操作或忘记取消买单。
       </p>
       <button 
         onClick={() => setStep(1)}
-        className="group relative inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white transition-all duration-200 bg-gray-900 rounded-full hover:bg-gray-800 hover:shadow-2xl hover:-translate-y-1 shadow-gray-900/20"
+        className="group relative inline-flex items-center justify-center px-8 py-3 text-base font-bold text-white transition-all duration-200 bg-gray-900 rounded-full hover:bg-gray-800 hover:shadow-xl hover:-translate-y-0.5 shadow-gray-900/20"
       >
         立即开始诊断
-        <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+        <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
       </button>
     </div>
 
     {/* Bento Grid Features */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-      <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+      <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <BarChart3 size={80} className="text-blue-600" />
+          <BarChart3 size={60} className="text-blue-600" />
         </div>
-        <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 mb-4">
-          <BarChart3 size={20} />
+        <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 mb-3">
+          <BarChart3 size={16} />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">智能胜率预测</h3>
-        <p className="text-sm text-gray-500 leading-relaxed">
+        <h3 className="text-base font-bold text-gray-900 mb-1">智能胜率预测</h3>
+        <p className="text-xs text-gray-500 leading-relaxed">
           实时比对 OpenAI, Midjourney, Apple 等平台最新退款条款，不打无准备之仗。
         </p>
       </div>
 
-      <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+      <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
         <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <FileText size={80} className="text-purple-600" />
+          <FileText size={60} className="text-purple-600" />
         </div>
-        <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-purple-600 mb-4">
-          <Wand2 size={20} />
+        <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600 mb-3">
+          <Wand2 size={16} />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">AI 深度润色</h3>
-        <p className="text-sm text-gray-500 leading-relaxed">
+        <h3 className="text-base font-bold text-gray-900 mb-1">AI 深度润色</h3>
+        <p className="text-xs text-gray-500 leading-relaxed">
           AI 模型根据您的具体遭遇，自动生成符合商务礼仪且引用消费者权益的申诉邮件。
         </p>
       </div>
 
-      <div className="p-6 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+      <div className="p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
          <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-          <Zap size={80} className="text-green-600" />
+          <Zap size={60} className="text-green-600" />
         </div>
-        <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center text-green-600 mb-4">
-          <Zap size={20} />
+        <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center text-green-600 mb-3">
+          <Zap size={16} />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">一键直达入口</h3>
-        <p className="text-sm text-gray-500 leading-relaxed">
+        <h3 className="text-base font-bold text-gray-900 mb-1">一键直达入口</h3>
+        <p className="text-xs text-gray-500 leading-relaxed">
           拒绝在复杂的官网里迷路。直接提供核心退款链接，省时省心。
         </p>
       </div>
@@ -518,16 +518,43 @@ const DetailsFormView = ({ setStep, formData, setFormData, handleInputChange }) 
               <option value="apple">Apple App Store 订阅</option>
               <option value="google">Google Play 订阅</option>
               <option value="paypal">PayPal</option>
+              <option value="alipay">Alipay (支付宝)</option>
+              <option value="wechat">WeChat Pay (微信支付)</option>
             </select>
           </div>
 
           {/* 动态表单项 */}
           {(formData.scenario === 'technical' || formData.scenario === 'dissatisfied' || formData.scenario === 'other') ? (
             <div>
-              <label className="block text-sm font-bold text-gray-700 mb-2">
-                {formData.scenario === 'technical' ? '故障描述' : 
-                 formData.scenario === 'dissatisfied' ? '不满之处' : '情况说明'}
-              </label>
+              <div className="flex justify-between items-center mb-2">
+                <label className="block text-sm font-bold text-gray-700">
+                  {formData.scenario === 'technical' ? '故障描述' : 
+                   formData.scenario === 'dissatisfied' ? '不满之处' : '情况说明'}
+                </label>
+                {formData.platformType === 'lovart' && (
+                   <button 
+                     onClick={() => setFormData(prev => ({
+                       ...prev,
+                       issueDetails: "I was charged for a yearly subscription without clear confirmation. I intended to try it for a month but was charged for a year via password-less payment. I have not used the credits."
+                     }))}
+                     className="text-xs text-pink-600 bg-pink-50 hover:bg-pink-100 px-2 py-1 rounded-md font-bold transition-colors flex items-center gap-1"
+                   >
+                     <Sparkles size={10} /> 填入 Lovart 典型案例
+                   </button>
+                )}
+              </div>
+              
+              {formData.platformType === 'lovart' && (
+                <div className="mb-3 bg-pink-50 border border-pink-100 rounded-lg p-3 flex gap-3 items-start">
+                  <div className="shrink-0 w-5 h-5 bg-pink-100 rounded-full flex items-center justify-center mt-0.5">
+                    <span className="text-pink-600 text-xs font-bold">!</span>
+                  </div>
+                  <div className="text-xs text-pink-800 leading-relaxed">
+                    <span className="font-bold">Lovart 退费关键：</span>通常需要两轮邮件。请务必在提交申请后留意自动回复，并准备好<span className="font-bold underline">账单截图</span>用于第二轮回复（如支付宝账单详情页）。
+                  </div>
+                </div>
+              )}
+
               <textarea 
                 name={formData.scenario === 'technical' ? 'errorDescription' : 'issueDetails'}
                 value={formData.scenario === 'technical' ? formData.errorDescription : formData.issueDetails}

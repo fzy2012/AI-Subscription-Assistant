@@ -42,6 +42,8 @@ const ExternalLink = (props) => <IconBase {...props}><path d="M18 13v6a2 2 0 0 1
 const Wand2 = (props) => <IconBase {...props}><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z" /><path d="m14 7 3 3" /><path d="M5 6v4" /><path d="M19 14v4" /><path d="M10 2v2" /><path d="M7 8H3" /><path d="M21 16h-4" /><path d="M11 3H9" /></IconBase>;
 const Loader2 = (props) => <IconBase {...props} className={`${props.className || ""} animate-spin`}><path d="M21 12a9 9 0 1 1-6.219-8.56" /></IconBase>;
 
+const Github = (props) => <IconBase {...props}><path d="M15 22v-4a4.8 4.8 0 0 0-1-5c3-4 4-5 6-9 0-2 0-3-1.5-5 .5-1.5 0-3-2-3-3 1.5-5 2.5-5 2.5-1.5 0-3 0-5-2.5-2-3-.5-1.5-2-3-2-3 0 2 0 3 1.5 5 2 4 1 5 6 9-1 1-1 3-1 5v4" /></IconBase>;
+
 // --- 核心配置 ---
 const BRAND_CONFIG = {
   logo: "/logo.png", // 正方形图标
@@ -49,7 +51,8 @@ const BRAND_CONFIG = {
   name: "AI 后悔药",
   subName: "AI Subscription Assistant",
   slogan: "入行 从这里开始",
-  year: "2026"
+  year: "2026",
+  githubUrl: "https://github.com/fzy2012/AI-Subscription-Assistant"
 };
 
 // --- API Helpers ---
@@ -263,7 +266,16 @@ const Header = () => {
         </a>
 
         <div className="hidden md:flex items-center gap-2">
-           <span className="flex h-2 w-2 rounded-full bg-green-500"></span>
+           <a 
+             href={BRAND_CONFIG.githubUrl} 
+             target="_blank" 
+             rel="noopener noreferrer"
+             className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-900 text-white text-xs font-bold hover:bg-gray-800 transition-colors"
+           >
+             <Github size={14} />
+             <span>Star on GitHub</span>
+           </a>
+           <span className="flex h-2 w-2 rounded-full bg-green-500 ml-2"></span>
            <span className="text-xs font-medium text-gray-500">Online Assistant</span>
         </div>
       </div>
@@ -272,7 +284,7 @@ const Header = () => {
 };
 
 const IntroView = ({ setStep }) => (
-  <div className="pt-40 pb-20 px-6 max-w-5xl mx-auto animate-fade-in">
+  <div className="pt-32 pb-20 px-6 max-w-5xl mx-auto animate-fade-in">
     {/* Hero Section */}
     <div className="text-center mb-20 relative">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-blue-400/20 blur-[120px] rounded-full pointer-events-none" />
@@ -994,7 +1006,18 @@ const App = () => {
            
            <div className="space-y-1">
               <p className="text-xs text-gray-500 font-medium">{BRAND_CONFIG.slogan}</p>
-              <p className="text-[10px] text-gray-400 max-w-xs mx-auto leading-normal">
+              <div className="flex items-center justify-center gap-4 text-[11px] font-medium text-gray-400 mt-4">
+                <a href={`${BRAND_CONFIG.githubUrl}/issues/new/choose`} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors flex items-center gap-1">
+                  <MessageSquare size={12} />
+                  提交新案例
+                </a>
+                <span className="text-gray-300">|</span>
+                <a href={BRAND_CONFIG.githubUrl} target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors flex items-center gap-1">
+                  <Github size={12} />
+                  参与共建
+                </a>
+              </div>
+              <p className="text-[10px] text-gray-400 max-w-xs mx-auto leading-normal mt-2">
                 © {BRAND_CONFIG.year} Ruhang365. Tool logic based on community best practices. Not legal advice.
               </p>
            </div>

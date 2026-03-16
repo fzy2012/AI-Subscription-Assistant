@@ -57,7 +57,9 @@ const BRAND_CONFIG = {
 
 // --- API Helpers ---
 const callGemini = async (prompt, systemInstruction = "", responseSchema = null) => {
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${apiKey}`;
+  // const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${apiKey}`;
+  const url = `https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-test-model:generateContent?key=${apiKey}`;
+
   
   const payload = {
     contents: [{ parts: [{ text: prompt }] }],

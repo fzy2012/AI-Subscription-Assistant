@@ -3,7 +3,7 @@
 > **让订阅不再是“单行道”。打破信息差，夺回消费者的“反悔权”。**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Powered by Gemini](https://img.shields.io/badge/AI-Gemini%203.0%20Flash-blue)](https://deepmind.google/technologies/gemini/)
+[![Powered by Vertex AI](https://img.shields.io/badge/AI-Vertex%20AI-blue)](https://cloud.google.com/vertex-ai)
 
 ## 🌟 项目愿景 (Vision)
 
@@ -18,7 +18,7 @@
 
 ## ✨ 核心功能 (Features)
 
-- **🤖 AI 智能诊断**：基于 Google Gemini 3.0 模型，分析你的遭遇（误触、忘记取消、技术故障等），自动匹配最佳退费策略。
+- **🤖 AI 智能诊断**：通过 Google Cloud Vertex AI 调用 Gemini 模型，分析你的遭遇（误触、忘记取消、技术故障等），自动匹配最佳退费策略。
 - **📝 律师级文书生成**：一键生成符合商务礼仪且引用消费者权益条款（如欧盟 14 天冷静期、Stripe 争议规则）的英文申诉邮件。
 - **🔥 热门平台直通车**：针对 **Lovart**, **Midjourney**, **OpenAI**, **Apple** 等“重灾区”平台，提供定制化的“保姆级”退费指引与典型案例库。
 - **📊 胜率预测**：基于社区大数据的退款成功率评估，不打无准备之仗。
@@ -27,7 +27,7 @@
 
 - **Frontend**: React 18 + Vite
 - **Styling**: Tailwind CSS
-- **AI Engine**: Google Gemini API (gemini-3.0-flash)
+- **AI Engine**: Google Cloud Vertex AI
 - **Icons**: Lucide React
 
 ## 🤝 如何参与共建 (Contributing)
@@ -72,9 +72,18 @@
    ```
 
 3. **配置环境变量**
-   在项目根目录创建 `.env` 文件，并填入你的 Gemini API Key：
+   本地开发可使用 Vercel Dev 或将前端代理到部署好的服务端 API。生产环境不要配置 Gemini API Key，模型调用只走 Vertex AI 服务端函数：
    ```env
-   VITE_GEMINI_API_KEY=your_api_key_here
+   GOOGLE_CLOUD_PROJECT=your-gcp-project-id
+   GOOGLE_CLOUD_LOCATION=global
+   GOOGLE_GENAI_USE_VERTEXAI=True
+   VERTEX_AI_SERVICE_ACCOUNT_JSON={"type":"service_account",...}
+   VERTEX_AI_MODEL=gemini-2.5-flash-lite
+   ```
+
+   如果只用 `npm run dev` 启动 Vite 前端，可额外配置：
+   ```env
+   VITE_AI_GENERATE_ENDPOINT=https://your-domain.com/api/vertex-generate
    ```
 
 4. **启动项目**

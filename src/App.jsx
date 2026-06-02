@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-// --- Gemini API Configuration ---
-const apiKey = import.meta.env.VITE_GEMINI_API_KEY || ""; // API Key is injected at runtime environment
-
 // --- 图标组件定义 (Inline SVGs) ---
 const IconBase = ({ children, className = "", size = 24, ...props }) => (
   <svg 
@@ -32,7 +29,6 @@ const FileText = (props) => <IconBase {...props}><path d="M14 2H6a2 2 0 0 0-2 2v
 const Sparkles = (props) => <IconBase {...props}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L12 3Z" /></IconBase>;
 const ArrowRight = (props) => <IconBase {...props}><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></IconBase>;
 const ChevronLeft = (props) => <IconBase {...props}><polyline points="15 18 9 12 15 6" /></IconBase>;
-const ChevronRight = (props) => <IconBase {...props}><polyline points="9 18 15 12 9 6" /></IconBase>;
 const RefreshCcw = (props) => <IconBase {...props}><path d="M3 2v6h6" /><path d="M3 13a9 9 0 1 0 3-7.7L3 8" /></IconBase>;
 const ShieldCheck = (props) => <IconBase {...props}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 12 2 2 4-4" /></IconBase>;
 const CheckCircle2 = (props) => <IconBase {...props}><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></IconBase>;
@@ -56,21 +52,15 @@ const BRAND_CONFIG = {
 };
 
 // --- API Helpers ---
-const callGemini = async (prompt, systemInstruction = "", responseSchema = null) => {
-  // const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.0-flash:generateContent?key=${apiKey}`;
-  const url = `https://aiplatform.googleapis.com/v1/publishers/google/models/gemini-test-model:generateContent?key=${apiKey}`;
-
-  
+const callVertexAi = async (prompt, systemInstruction = "", responseSchema = null) => {
   const payload = {
-    contents: [{ parts: [{ text: prompt }] }],
-    systemInstruction: { parts: [{ text: systemInstruction }] },
-    generationConfig: responseSchema 
-      ? { responseMimeType: "application/json", responseSchema: responseSchema }
-      : undefined
+    prompt,
+    systemInstruction,
+    responseSchema,
   };
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(import.meta.env.VITE_AI_GENERATE_ENDPOINT || '/api/vertex-generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -79,10 +69,10 @@ const callGemini = async (prompt, systemInstruction = "", responseSchema = null)
     if (!response.ok) throw new Error(`API Error: ${response.status}`);
     
     const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const text = data.text;
     return responseSchema ? JSON.parse(text) : text;
   } catch (error) {
-    console.error("Gemini API Error:", error);
+    console.error("Vertex AI API Error:", error);
     throw error;
   }
 };
@@ -249,7 +239,7 @@ const Header = () => {
                  src={BRAND_CONFIG.logo} 
                  alt="Logo" 
                  className="w-full h-full object-cover" 
-                 onError={(e) => {
+                 onError={() => {
                    setImgError(true);
                  }}
                />
@@ -737,8 +727,8 @@ const ResultView = ({ setStep, formData, aiPolishedEmail, handleEmailPolish, isA
                       <h4 className="font-bold text-sm text-gray-900">自助通道 (Self-Service)</h4>
                       <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                          {formData.platformType === 'apple' 
-                          ? <span>访问 <a href="https://reportaproblem.apple.com" target="_blank" className="text-blue-600 underline font-medium">Apple 报告问题页</a>，登录后选择 "I didn't mean to buy this"。</span>
-                          : <span>登录官网 {platformInfo.refundUrl && <a href={platformInfo.refundUrl} target="_blank" className="text-blue-600 underline font-medium">账户页 <ExternalLink size={10} className="inline"/></a>}。先尝试点 "Cancel"，部分平台在检测到 0 用量时会触发自动退款弹窗。</span>
+                          ? <span>访问 <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-medium">Apple 报告问题页</a>，登录后选择 &quot;I didn&apos;t mean to buy this&quot;。</span>
+                          : <span>登录官网 {platformInfo.refundUrl && <a href={platformInfo.refundUrl} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline font-medium">账户页 <ExternalLink size={10} className="inline"/></a>}。先尝试点 &quot;Cancel&quot;，部分平台在检测到 0 用量时会触发自动退款弹窗。</span>
                         }
                       </p>
                     </div>
@@ -884,7 +874,7 @@ const App = () => {
     };
 
     try {
-      const result = await callGemini(formData.userStory, systemPrompt, schema);
+      const result = await callVertexAi(formData.userStory, systemPrompt, schema);
       
       setFormData(prev => ({
         ...prev,
@@ -938,7 +928,7 @@ const App = () => {
     `;
     
     try {
-      const polishedText = await callGemini(userPrompt, systemPrompt);
+      const polishedText = await callVertexAi(userPrompt, systemPrompt);
       setAiPolishedEmail(polishedText);
     } catch (e) {
       console.error(e);
